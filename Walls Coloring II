@@ -1,0 +1,48 @@
+int minCost(int [][] costs) {
+		//Write your code here
+		
+		// Base case handle
+		if(costs[0].length == 1 && costs.length > 1) return -1;
+		if(costs[0].length == 1 && costs.length == 1) return costs[0][0];
+		
+		int firstMin = Integer.MAX_VALUE, minIndex = -1, secondMin = Integer.MAX_VALUE;
+		
+		for(int i=0; i<costs[0].length; i++){
+		    if(firstMin > costs[0][i]){
+		        secondMin = firstMin;
+		        firstMin = costs[0][i];
+		        minIndex = i;
+		    } else if (secondMin > costs[0][i]){
+		        secondMin = costs[0][i];
+		    }
+		}
+		// check the best price
+		for(int i=1; i<costs.length; i++){
+		    int fMin = Integer.MAX_VALUE, mIndex = -1, sMin = Integer.MAX_VALUE;
+		    for(int j=0; j<costs[0].length; j++){
+		        if(j == minIndex){
+		            costs[i][j] += secondMin;
+		        } else {
+		            costs[i][j] += firstMin;
+		        }
+		        
+    		    if(fMin > costs[i][j]){
+    		        sMin = fMin;
+    		        fMin = costs[i][j];
+    		        mIndex = j;
+    		    } else if (sMin > costs[i][j]){
+    		        sMin = costs[i][j];
+    		    }
+		    }
+		    firstMin = fMin;
+		    secondMin = sMin;
+		    minIndex = mIndex;
+		}
+		
+		// last row min for ans
+		Integer ans = Integer.MAX_VALUE;
+		for(int i=0; i<costs[0].length; i++){
+		    ans = Math.min(ans, costs[costs.length-1][i]);
+		}
+		return ans;
+	}
